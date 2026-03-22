@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
 import { getDatasets } from './api/datasets';
 import type { Dataset } from './types/dataset';
+import PageHeader from './components/PageHeader/PageHeader';
+import DatasetFilters from './components/DatasetFilters/DatasetFilters';
+import DatasetList from './components/DatasetList/DatasetList';
+import CreateDatasetModal from './components/CreateDatasetModal/CreateDatasetModal';
 
 const App = () => {
     const [datasets, setDatasets] = useState<Dataset[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,24 +27,27 @@ const App = () => {
         fetchData();
     }, []);
 
+    const openCreateModal = () => {
+        setIsCreateModalOpen(true);
+    };
+
+    const closeCreateModal = () => {
+        setIsCreateModalOpen(false);
+    };
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
 
     return (
-        <div>
-            <h1>Dataset Catalog</h1>
-            {datasets.length === 0 ? (
-                <p>No datasets yet. Create one to get started.</p>
-            ) : (
-                <ul>
-                    {datasets.map((dataset) => (
-                        <li key={`${dataset.name}-${dataset.owner}`}>
-                            {dataset.name} - {dataset.domain} - {dataset.status}
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </div>
+        <main>
+            <PageHeader onCreateDataset={openCreateModal} />
+            <DatasetFilters />
+            <DatasetList datasets={datasets} />
+            <CreateDatasetModal
+                isOpen={isCreateModalOpen}
+                onClose={closeCreateModal}
+            />
+        </main>
     );
 };
 
