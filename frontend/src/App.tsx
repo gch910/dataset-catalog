@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
+import { Container, Stack, Typography } from '@mui/material';
 import { getDatasets } from './api/datasets';
-import type { Dataset } from './types/dataset';
+import type { Dataset, DatasetStatus } from './types/dataset';
 import PageHeader from './components/PageHeader/PageHeader';
 import DatasetFilters from './components/DatasetFilters/DatasetFilters';
 import DatasetList from './components/DatasetList/DatasetList';
@@ -11,6 +12,11 @@ const App = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+    const [selectedDomain, setSelectedDomain] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState<DatasetStatus | ''>(
+        '',
+    );
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,19 +41,60 @@ const App = () => {
         setIsCreateModalOpen(false);
     };
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>{error}</p>;
+    const handleCreateDataset = (dataset: Dataset) => {
+        setDatasets((current) => [dataset, ...current]);
+    };
+
+    const availableDomains = Array.from(new Set(datasets.map((d) => d.domain)));
+
+    const filteredDatasets = datasets.filter((dataset) => {
+        const matchesDomain =
+            selectedDomain === '' || dataset.domain === selectedDomain;
+
+        const matchesStatus =
+            selectedStatus === '' || dataset.status === selectedStatus;
+
+        return matchesDomain && matchesStatus;
+    });
+
+    if (loading) {
+        return (
+            <Container sx={{ mt: 4 }}>
+                <Typography>Loading...</Typography>
+            </Container>
+        );
+    }
+
+    if (error) {
+        return (
+            <Container sx={{ mt: 4 }}>
+                <Typography color="error">{error}</Typography>
+            </Container>
+        );
+    }
 
     return (
-        <main>
-            <PageHeader onCreateDataset={openCreateModal} />
-            <DatasetFilters />
-            <DatasetList datasets={datasets} />
-            <CreateDatasetModal
-                isOpen={isCreateModalOpen}
-                onClose={closeCreateModal}
-            />
-        </main>
+        <Container sx={{ mt: 4 }}>
+            <Stack spacing={3}>
+                <PageHeader onOpenCreateModal={openCreateModal} />
+
+                <DatasetFilters
+                    domain={selectedDomain}
+                    status={selectedStatus}
+                    onDomainChange={setSelectedDomain}
+                    onStatusChange={setSelectedStatus}
+                    availableDomains={availableDomains}
+                />
+
+                <DatasetList datasets={filteredDatasets} />
+
+                <CreateDatasetModal
+                    isOpen={isCreateModalOpen}
+                    onClose={closeCreateModal}
+                    onCreateDataset={handleCreateDataset}
+                />
+            </Stack>
+        </Container>
     );
 };
 

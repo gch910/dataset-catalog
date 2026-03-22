@@ -8,4 +8,10 @@ export interface Dataset {
     status: DatasetStatus;
 }
 
-export type CreateDatasetInput = Dataset;
+export interface CreateDatasetFormValues {
+    name: string;
+    domain: string;
+    owner: string;
+    qualityScore: string;
+    status: DatasetStatus;
+}

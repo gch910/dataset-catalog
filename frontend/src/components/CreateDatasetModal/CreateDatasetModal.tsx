@@ -1,24 +1,26 @@
+import { Dialog, DialogTitle } from '@mui/material';
+import type { Dataset } from '../../types/dataset';
+import CreateDatasetForm from './CreateDatasetForm';
+
 interface CreateDatasetModalProps {
     isOpen: boolean;
     onClose: () => void;
+    onCreateDataset: (dataset: Dataset) => void;
 }
 
-const CreateDatasetModal = ({ isOpen, onClose }: CreateDatasetModalProps) => {
-    if (!isOpen) {
-        return null;
-    }
-
+const CreateDatasetModal = ({
+    isOpen,
+    onClose,
+    onCreateDataset,
+}: CreateDatasetModalProps) => {
     return (
-        <div>
-            <div>
-                <h2>Create Dataset</h2>
-                <p>Form Goes here.</p>
-            </div>
-
-            <button type="button" onClick={onClose}>
-                Close
-            </button>
-        </div>
+        <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="sm">
+            <DialogTitle>Create Dataset</DialogTitle>
+            <CreateDatasetForm
+                onCancel={onClose}
+                onCreateDataset={onCreateDataset}
+            />
+        </Dialog>
     );
 };
 

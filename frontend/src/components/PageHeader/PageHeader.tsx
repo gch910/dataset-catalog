@@ -1,19 +1,33 @@
+import { Box, Button, Stack, Typography } from '@mui/material';
+
 interface PageHeaderProps {
-    onCreateDataset: () => void;
+    onOpenCreateModal: () => void;
 }
 
-const PageHeader = ({ onCreateDataset }: PageHeaderProps) => {
+const PageHeader = ({ onOpenCreateModal }: PageHeaderProps) => {
     return (
-        <header>
-            <div>
-                <h1>Dataset Catalog</h1>
-                <p>Manage datasets and review their governance status.</p>
-            </div>
+        <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+        >
+            <Box>
+                <Typography variant="h4" fontWeight={600}>
+                    Dataset Catalog
+                </Typography>
+                <Typography color="text.secondary">
+                    Manage datasets and review their governance status.
+                </Typography>
+            </Box>
 
-            <button type="button" onClick={onCreateDataset}>
+            <Button
+                variant="contained"
+                size="large"
+                onClick={onOpenCreateModal}
+            >
                 Create Dataset
-            </button>
-        </header>
+            </Button>
+        </Stack>
     );
 };
 
