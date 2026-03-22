@@ -31,6 +31,8 @@ Backend:
 
 Run backend and frontend in separate terminals.
 
+Ensure both are running at the same time for the app to function correctly.
+
 ### 1. Install frontend dependencies
 
 ```bash
@@ -75,7 +77,7 @@ cd frontend
 npm run dev
 ```
 
-Expected default URL:
+The frontend will be available at a local URL shown in the terminal, typically:
 
 ```text
 http://localhost:5173
