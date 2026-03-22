@@ -7,3 +7,5 @@ export interface Dataset {
     qualityScore: number;
     status: DatasetStatus;
 }
+
+export type CreateDatasetInput = Dataset;
