@@ -43,6 +43,7 @@ npm install
 ```bash
 cp .env.example .env
 ```
+The `.env.example` file is included in the repository.
 
 Default `frontend/.env.example`:
 
@@ -59,11 +60,13 @@ cd backend
 dotnet run
 ```
 
-Expected default URL:
+The backend will print a URL similar to:
 
 ```text
 http://localhost:5059
 ```
+
+If a different port is shown in the terminal output, update `frontend/.env` to match it.
 
 ### 4. Start frontend
 
@@ -86,7 +89,7 @@ The frontend uses `VITE_API_BASE_URL` to call the backend API.
 
 ### Backend CORS
 
-Allowed frontend origins are configured in backend settings instead of being hardcoded in code.
+Allowed frontend origins are configured in backend appsettings.
 
 `backend/appsettings.json`:
 
@@ -112,15 +115,22 @@ Right now, the backend returns an empty list for this endpoint. Datasets created
 
 ## Implementation Notes
 
-- Filtering is client-side (Domain and Status).
-- Form handling separates domain model type (`Dataset`) from form input type (`CreateDatasetFormValues`) so `qualityScore` can be typed as text in the form and converted to number on submit.
-- AI insight row appears when `qualityScore < 60`.
+- Filtering is handled client-side (Domain and Status).
+- Datasets created through the UI are added immediately to the table but are not persisted.
+- An AI insight row is displayed when a dataset has a quality score below 60.
 
 ## Limitations
 
 - No backend persistence yet
 - Backend currently exposes only `GET /api/datasets`
 - Created datasets exist only in frontend memory
+
+## AI Usage
+
+AI was used for:
+- Syntax assistance
+- Minor styling guidance
+- Third-party library documentation lookups (Material UI)
 
 ## Troubleshooting
 
