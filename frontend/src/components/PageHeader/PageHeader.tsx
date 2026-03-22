@@ -7,7 +7,7 @@ const PageHeader = ({ onCreateDataset }: PageHeaderProps) => {
         <header>
             <div>
                 <h1>Dataset Catalog</h1>
-                <>Manage datasets and review their governance status.</>
+                <p>Manage datasets and review their governance status.</p>
             </div>
 
             <button type="button" onClick={onCreateDataset}>
